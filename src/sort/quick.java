@@ -11,6 +11,8 @@ class quick {
 		output(arr);
 	}
 
+
+
 	private static void quick_Sort(int[] arr, int start, int end) {
 
 		int left = start;
