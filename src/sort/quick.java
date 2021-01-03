@@ -1,5 +1,5 @@
 package sort;
-//O(N * logN)
+//O(N * logN)	이미 정렬이 되어 있는 경우는 O(N^2)
 
 class quick {
 
