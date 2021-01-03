@@ -9,7 +9,7 @@ public class heap {
 			int child = i;
 			// index 0 : 최상위 root
 			while (child > 0) {
-				//  이진트리 : 부모index = 자식index - 1 / 2
+				//  이진트리 : 부모index = 자식index - 1 / 2		왼쪽자식 = 부모index * 2 + 1
 				int parent = (child - 1) / 2;
 				if (data[child] > data[parent]) {
 					int temp = data[parent];
