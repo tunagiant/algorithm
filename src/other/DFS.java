@@ -1,3 +1,5 @@
+package other;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -71,3 +73,4 @@ class Graph {
 		}
 	}
 }
+
