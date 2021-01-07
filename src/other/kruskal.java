@@ -1,5 +1,6 @@
 package other;
 // 간선 선택 기반, 그리디, MST
+
 // 가중치 오름차순으로 정렬, 사이클X
 
 import java.io.BufferedReader;
@@ -7,6 +8,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
+/*case
+ * 5 6
+1 2 10
+1 3 15
+3 4 20
+4 5 10
+2 4 30
+3 5 5
+ *  */
 
 public class kruskal {
 
@@ -30,6 +40,7 @@ public class kruskal {
 			edges[i][2] = Integer.parseInt(input2[2]);
 		}
 
+		// cost 오름차순으로(최소값)
 		Arrays.sort(edges, new Comparator<int[]>() {
 
 			@Override
@@ -44,7 +55,8 @@ public class kruskal {
 		int cnt = 0;
 
 		for (int i = 0; i < edges.length; i++) {
-			union(edges[i][0], edges[i][1]);
+			if (union(edges[i][0], edges[i][1]))
+				;
 			result += edges[i][2];
 			cnt++;
 
@@ -62,15 +74,16 @@ public class kruskal {
 		return parents[x] = find(parents[x]);
 	}
 
-	public static void union(int x, int y) {
+	public static boolean union(int x, int y) {
 		int xRoot = find(x);
 		int yRoot = find(y);
 
-		if (xRoot >= yRoot) {
+		if (xRoot != yRoot) {
 			parents[yRoot] = xRoot;
-		} else {
-			parents[xRoot] = yRoot;
+			return true;
 		}
-	}
+		// 연결을 하지 못한 경우
+		return false;
 
+	}
 }
