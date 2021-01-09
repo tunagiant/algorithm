@@ -3,7 +3,7 @@ package other;
 
 // 프림과 달리 다익스트라는 두 노드사이의 최단거리 보장
 // 프림은 무향, 다익스트라는 무향,유향
-// 음의 간선 존재X
+// 음의 간선 존재X 가중치의 합이 음수인 사이클이 존재하게 되면 최단 경로가 음의 무한대로 발산하게 됨
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 /*case
- * 5 6
+  5 6
 1 2 10
 1 3 15
 3 4 20
