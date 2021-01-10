@@ -55,10 +55,11 @@ public class kruskal {
 		int cnt = 0;
 
 		for (int i = 0; i < edges.length; i++) {
-			if (union(edges[i][0], edges[i][1]))
-				;
-			result += edges[i][2];
-			cnt++;
+			if (union(edges[i][0], edges[i][1])) {
+
+				result += edges[i][2];
+				cnt++;
+			}
 
 			if (cnt == V - 1)
 				break;

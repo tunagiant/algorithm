@@ -9,18 +9,20 @@ public class heap {
 			int child = i;
 			// index 0 : 최상위 root
 			while (child > 0) {
-				//  이진트리 : 부모index = 자식index - 1 / 2		왼쪽자식 = 부모index * 2 + 1
+				//  완전이진트리 : 부모index = 자식index - 1 / 2		왼쪽자식 = 부모index * 2 + 1
 				int parent = (child - 1) / 2;
 				if (data[child] > data[parent]) {
 					int temp = data[parent];
 					data[parent] = data[child];
 					data[child] = temp;
 				}
+				// 순차적으로 올라가면서 비교 : 현재의 child가 다음 힙단위에선 parent가 됨
 				child = parent;
 			}
 		}
 	}
 
+	
 	public static void main(String[] args) {
 		
 		data = new int[number];

@@ -37,6 +37,7 @@ public class dijkstra2 {
 			this.weight = weight;
 		}
 
+		// v, weight 중 weight를 우선순위의 기준으로설정(우선순위큐  특성)
 		@Override
 		public int compareTo(Edge o) {
 			// TODO Auto-generated method stub
@@ -60,14 +61,14 @@ public class dijkstra2 {
 		for (int i = 0; i < V; i++)
 			adj[i] = new ArrayList<>();
 		for (int i = 0; i < E; i++) {
-			// 첫번째가 출발지, 두번째가 도착지, 세번째가 가중치
-			adj[sc.nextInt()].add(new Edge(sc.nextInt(), sc.nextInt()));
+			// 첫번째(i)가 출발지, 두번째(v)가 도착지, 세번째(weight)가 가중치
+			adj[sc.nextInt() - 1].add(new Edge(sc.nextInt() - 1, sc.nextInt()));
 		}
 		
 		PriorityQueue<Edge> pq = new PriorityQueue<>();
 		boolean[] check = new boolean[V];
 		Edge[] D = new Edge[V];
-		// 0번에서 출발하는걸로.
+		// 0번에서 출발하는걸로	초기화작업
 		for (int i = 0; i < V; i++) {
 			// 원하는 출발지
 			if (i == 0) {
@@ -78,10 +79,14 @@ public class dijkstra2 {
 			pq.add(D[i]);
 		}
 		while (!pq.isEmpty()) {
+			// 0 -> edge.v
 			Edge edge = pq.poll();
 
+			// 0 -> edge.v	이제 밑의 향상된 for문에서 edge.v에서 다른 모든정점으로의 거리 계산 (리스트)
+			// 0 -> edge.v(현재정점) -> next(다음정점)
 			for (Edge next : adj[edge.v]) {
-				// check되지 않았으면서, D[next.v]가 D[edge.v] + next.weight 보다 더 크다면 갱신
+				// check되지 않았으면서, D[next.v](0에서 (현재정점(edge.v) 안거치고) next로 다이렉트)가 
+				// D[edge.v](0 -> edge.v) + next.weight(edge.v -> next의 가중치) 보다 더 크다면 후자값으로 갱신
 				if (!check[next.v] && D[next.v].weight > D[edge.v].weight + next.weight) {
 					D[next.v].weight = D[edge.v].weight + next.weight;
 					// decrease key

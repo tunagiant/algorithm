@@ -1,7 +1,9 @@
 package other;
 //최소 스패닝트리	따라서 최단거리가 아닐 수도 있음
-//정점 선택 기반, 간선 많을때 유리, 인접행렬 or PQ로 풀이가능 (인접행렬이 효율good)
-//모든정점 선택까지 반복, 사이클X
+
+// 정점 선택 기반, 간선 많을때 유리, 인접행렬 or PQ로 풀이가능 (인접행렬이 효율good)
+// 모든정점 선택까지 반복, 사이클X
+// 모든 정점을 다 잇는 최소비용경로 구함
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,8 +19,8 @@ import java.util.Arrays;
 3 5 5
  *  */
 
-
 public class prim {
+	
 	static int INF = 100000;
 
 	public static void main(String[] args) throws IOException {
@@ -76,7 +78,7 @@ public class prim {
 				}
 			}
 		}
-		
+
 		System.out.println(result);
 
 	}
