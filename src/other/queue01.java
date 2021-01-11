@@ -2,7 +2,7 @@ package other;
 
 import java.util.NoSuchElementException;
 
-class Queue<T> {
+class queue<T> {
 	
 	static class Node<T> {
 		private T data;
@@ -57,7 +57,7 @@ class Queue<T> {
 
 public class queue01 {
 	public static void main(String[] args) {
-		Queue<Integer> q = new Queue<Integer>();
+		queue<Integer> q = new queue<Integer>();
 		q.add(1);
 		q.add(2);
 		q.add(3);
