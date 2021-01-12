@@ -2,6 +2,7 @@ package other;
 
 //코사라주		2150번
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -25,10 +26,10 @@ import java.util.TreeMap;
 
 public class scc01 {
 	private static boolean[] visited;
-	private static ArrayList<ArrayList<Integer>> digraph;
-	private static ArrayList<ArrayList<Integer>> rdigraph;
+	private static ArrayList<ArrayList<Integer>> digraph;	// 방향그래프
+	private static ArrayList<ArrayList<Integer>> rdigraph;	// 역방향그래프
+	private static ArrayList<ArrayList<Integer>> res;		// 결과저장
 	private static Stack<Integer> stack;
-	private static ArrayList<ArrayList<Integer>> res;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -40,7 +41,7 @@ public class scc01 {
 		rdigraph = new ArrayList<ArrayList<Integer>>();
 		res = new ArrayList<ArrayList<Integer>>();
 
-		for (int i = 1; i <= V; i++) {
+		for (int i = 0; i <= V; i++) {
 			digraph.add(new ArrayList<Integer>());
 			rdigraph.add(new ArrayList<Integer>());
 			res.add(new ArrayList<Integer>());
@@ -70,7 +71,6 @@ public class scc01 {
 		int groupNum = 0;
 
 		// 역방향 그래프에 대하여 dfs를 수행
-
 		while (!stack.isEmpty()) {
 			int start = stack.pop();
 			// 이때 방문 체크된 것은 이미 start가 하나의 SCC 그룹에 속해 있다는뜻
@@ -85,16 +85,19 @@ public class scc01 {
 		StringBuilder sb = new StringBuilder();
 		sb.append(groupNum + "\n"); // SCC 그룹 개수 출력
 
+		// TreeMap : Key순으로 정렬
 		TreeMap<Integer, Integer> map = new TreeMap<>(); // key를 기준으로 오름차순정렬
 		for (int i = 0; i < groupNum; i++) {
 			Collections.sort(res.get(i)); // 각각 SCC 그룹 오름차순 정렬
-			map.put(res.get(i).get(0), i); // key : SCC 그룹의 첫번째 항, value : 인덱스
+			map.put(res.get(i).get(0), i);
+			// key : SCC 그룹의 첫번째 항, value : 인덱스(맵은 순서 저장안되지만, 임의로 정함)
 
 		}
 
 		// map 의 value를 이용하여 첫번째 항이 작은 순서대로 출력
+		// forEach : 함수형 인터페이스	이경우는 consumer 인터페이스
 		map.keySet().forEach(key -> {
-			int value = map.get(key);
+			int value = map.get(key);		// value : 인덱스
 
 			for (int now : res.get(value)) {
 				sb.append(now + " ");
