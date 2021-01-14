@@ -6,11 +6,11 @@ import java.util.List;
 public class rabin_karp {
 
 	public static void main(String[] args) {
-		String txt = "abaaccdaabacaba";
-		String pat = "accdaa";
+		String txt = "BABABBAACACDADDAAVAABBAASAACACDBBAAC";
+		String pat = "ACACD";
 		List<Integer> list = new Solution().solve(txt, pat);
 		for (Integer value : list) {
-			System.out.print(value + "번째에서 발견했습니다.");
+			System.out.print(value + "번째 발견");
 			System.out.println();
 		}
 	}
@@ -18,6 +18,8 @@ public class rabin_karp {
 }
 
 class Solution {
+	int mod = 403;
+	
 	List<Integer> solve(String txt, String pat) {
 		double txtHash = 0, patHash = 0, power = 1;
 		int txtLen = txt.length();
@@ -33,12 +35,15 @@ class Solution {
 				for (int j = 0; j < patLen; j++) {
 					txtHash = txtHash + txt.charAt(patLen - 1 - j) * power;
 					patHash = patHash + pat.charAt(patLen - 1 - j) * power;
-					if (j < patLen - 1)
-						power = power * 2;
+					if (j < patLen - 1) {
+						power *= 2;
+					}
+											
 				}
 			} else {
 				// 긴글 해시 값 = 2 * (첫파트 해시 값 - 가장 앞에 있는 문자) + 새롭게 들어온 문자
-				txtHash = 2 * (txtHash - (txt.charAt(i - 1) * power)) + txt.charAt(patLen - 1 + i);
+				txtHash = 2 * (txtHash - (txt.charAt(i - 1) * power))
+						+ txt.charAt(patLen - 1 + i);
 			}
 
 			if (txtHash == patHash) {
