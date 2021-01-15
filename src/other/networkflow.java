@@ -1,8 +1,10 @@
 package other;
 
+//에드몬드 카프 알고리즘
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -20,72 +22,86 @@ import java.util.StringTokenizer;
  */
 
 public class networkflow {
+	static int N;
+	static LinkedList<Node>[] arr;
+	static int[] prev;
+	static int MAX = 1005;
+	static int[][] flow;
+	static int[][] capacity;
 
-	public static int INF = 100000;
+	static int CtoI(char c) {
+		if (c <= 'Z')
+			return c - 'A';
+		return c - 'a' + 26;
+	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int V = Integer.parseInt(st.nextToken());
-		int E = Integer.parseInt(st.nextToken());
-		int src = Integer.parseInt(st.nextToken());
-		int sink = Integer.parseInt(st.nextToken());
+		StringTokenizer token = new StringTokenizer(br.readLine());
 
-		int[][] flow = new int[V + 1][V + 1];
-		int[][] capacity = new int[V + 1][V + 1];
-		boolean[][] adj = new boolean[V + 1][V + 1];
-
-		for (int i = 0; i < E; i++) {
-			st = new StringTokenizer(br.readLine());
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			int c = Integer.parseInt(st.nextToken());
-			capacity[a][b] = c;
-			adj[a][b] = adj[b][a] = true;
+		arr = new LinkedList[MAX];
+		for (int i = 0; i < MAX; i++) {
+			arr[i] = new LinkedList<>();
 		}
-
-		Queue<Integer> q = new LinkedList<Integer>();
-		int ans = 0;
-
+		capacity = new int[MAX][MAX];
+		flow = new int[MAX][MAX];
+		N = Integer.parseInt(token.nextToken());
+		for (int i = 1; i <= N; i++) {
+			String[] temp = br.readLine().split(" ");
+			int s = CtoI(temp[0].charAt(0));
+			int e = CtoI(temp[1].charAt(0));
+			int val = Integer.parseInt(temp[2]);
+			capacity[s][e] += val;
+			capacity[e][s] += val;
+			arr[s].add(new Node(e, val));
+			arr[e].add(new Node(s, val));
+		}
+		int S = CtoI('A');
+		int E = CtoI('Z');
+		int total = 0;
+		// 증가 경로를 못찾을 때까지 돌린다.
 		while (true) {
-			int[] prev = new int[V + 1];
+			int[] past = new int[MAX]; // 경로 기억
+			Arrays.fill(past, -1);
 
-			q.clear();
-			q.add(src);
-			prev[src] = src;
-
-			while (!q.isEmpty()) {
-				int cur = q.poll();
-
-				for (int there = 1; there <= V; there++) {
-					if (!adj[cur][there])
-						continue;
-					if (prev[there] != 0)
-						continue;
-
-					if (capacity[cur][there] - flow[cur][there] > 0) {
-						q.add(there);
-						prev[there] = cur;
-						if (there == sink)
-							break;
+			Queue<Node> que = new LinkedList<>();
+			que.add(new Node(S, 0));// 처음 시작점에서 계속 돌려야됨
+			while (!que.isEmpty() && past[E] == -1) {
+				Node current = que.poll();
+				for (Node node : arr[current.idx]) {
+					if (capacity[current.idx][node.idx] - flow[current.idx][node.idx] > 0 && past[node.idx] == -1) {
+						past[node.idx] = current.idx;
+						que.add(new Node(node.idx, 0));
+						if (node.idx == E) {
+							break; // 목표점 도달시 나옴
+						}
 					}
 				}
 			}
+			if (past[E] == -1)
+				break; // 가는 곳이 더 없다면 루프 탈출
 
-			if (prev[sink] == 0)
-				break;
-
-			int minFlow = INF;
-			for (int v = sink; prev[v] != v; v = prev[v]) {
-				minFlow = Math.min(minFlow, capacity[prev[v]][v] += minFlow);
-				flow[v][prev[v]] -= minFlow;
+			int minValue = Integer.MAX_VALUE;
+			for (int i = E; i != S; i = past[i]) {
+				// 끝에서 시작점으로 움직임
+				minValue = Math.min(minValue, capacity[past[i]][i] - flow[past[i]][i]);
 			}
-
-			ans += minFlow;
+			for (int i = E; i != S; i = past[i]) {
+				flow[past[i]][i] += minValue;
+				flow[i][past[i]] -= minValue;
+			}
+			total += minValue;
 		}
-
-		System.out.println(ans);
-
+		System.out.println(total);
 	}
+}
 
+class Node {
+	public int idx;
+	public long val;
+
+	Node(int idx, long val) {
+		this.idx = idx;
+		this.val = val;
+	}
 }
