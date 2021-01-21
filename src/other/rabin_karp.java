@@ -18,7 +18,7 @@ public class rabin_karp {
 }
 
 class Solution {
-	int mod = 403;
+	int mod = 13;
 	
 	List<Integer> solve(String txt, String pat) {
 		double txtHash = 0, patHash = 0, power = 1;
